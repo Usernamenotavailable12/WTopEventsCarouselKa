@@ -1,0 +1,63 @@
+
+<div id="wln"></div>
+    <script src="https://sb2wsdk-altenar2.biahosted.com/altenarWSDK.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    window.altenarWSDK.init({
+        integration: 'ambassadoribet',
+        culture: 'ka-GE'
+    });
+        window.WLN = window.altenarWSDK.addWidget({
+            widget: 'WTopEventsCarousel',
+            props: {
+                variants: {
+                    BannerEventBox: 4,
+                    OddBox: 1,
+                    OddChangeIndicator: 2
+                },
+                enableExpansion: false,
+                expand: false,
+                scrollerControls: 3,
+                showHeader: false,
+                showBookedLiveIndicator: true,
+                showScorePreview: true,
+                showLiveEvents: true,
+                showLiveIndicator: true,
+                imageType: 0,
+                iconOverride: {
+                    iso: {},
+                    sport: {},
+                    category: {},
+                    championship: {
+                        2995: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/e53d1097-3c65-40af-af90-7f9a586b7c0b/euroleague-basketball-logo-2.svg",
+                        3031: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/0c4b32b2-a36f-4b84-85b6-2fd58562f3f4/UEFA%20Euro%202024%20Germany.svg",
+                        16808: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b6fae6bf-6b17-43c8-88ba-7fc45ef5f45d/Uefa%20Champions%20League.svg",
+                        16809: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/fff07a26-db7f-445a-ab63-925d62a722eb/Uefa%20Europa%20Conference%20League.svg",
+                        31608: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/d7ac85e4-2c6c-466c-b486-cb83efcf69c9/Uefa%20Europa%20League.svg"
+                    }
+                },
+                backgroundOverride: {
+                    sport: {
+                        66: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/ea1cd82f-bcb9-40fd-b044-58b66c503199/Football.png",
+                        67: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/91cdd81a-2825-47d8-bed0-fa0640f0a8b4/Basketball.png",
+                        68: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3d3d0a92-33e0-46f8-a7b0-18b977bd92bb/Tennis.png",
+                        69: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/1a19e8e2-9bdc-4227-a3f6-215a97b8bd04/Volleyball.png",
+                        70: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/c6f22822-d159-4688-a414-aee8bb1b2179/Ice%20Hockey.png",
+                        73: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/d1325620-f0b1-4c37-beb2-5cb2ba8d0a42/Handball.png",
+                        75: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b2a747c3-be19-499b-a5e8-b8f3f0efcd16/American%20Football.png",
+                        76: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/7917acac-a615-448a-82c1-c6b3ecadc540/Baseball.png",
+                        84: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/43ef9536-c403-441e-98be-55467d9a0a7b/MMA.png",
+                        102: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/0ba9e5ce-46dc-43ad-94e4-b05b13afabe7/Rugby.png",
+                        145: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/c8398f46-accc-4c58-9390-e50d253efa7e/E-sports.png"
+                    },
+                    championship: {
+                        3031: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/ebf6020e-cacf-4ca0-bc05-887cfcde4bad/background-euro-2024.png",
+                        16808: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/a36bdeb5-3698-4874-8c5b-7b018366926b/background-hampions-league-2.png"
+                    }
+                }
+            },
+            container: document.getElementById('wln')
+        });
+    }
+);
+    </script>
