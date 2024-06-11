@@ -1,27 +1,28 @@
 <head>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <div id="wln"></div>
-    <script src="https://sb2wsdk-altenar2.biahosted.com/altenarWSDK.js"></script>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    window.altenarWSDK.init({
-        integration: 'ambassadoribet',
-        culture: 'ka-GE'
-    });
+<script src="https://sb2wsdk-altenar2.biahosted.com/altenarWSDK.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        window.altenarWSDK.init({
+            integration: 'ambassadoribet',
+            culture: 'ka-GE'
+        });
         window.WLN = window.altenarWSDK.addWidget({
             widget: 'WTopEventsCarousel',
             props: {
                 variants: {
-                    BannerEventBox: 4,
+                    BannerEventBox: 5,
                     OddBox: 7,
-                    OddChangeIndicator: 2
+                    OddChangeIndicator: 2,
                 },
                 enableExpansion: false,
                 expand: false,
                 scrollerControls: 3,
+                competitorLogoURL: "https://usernamenotavailable12.github.io/altenar_logo/{0}.png", 
                 showHeader: false,
                 showBookedLiveIndicator: true,
                 showScorePreview: true,
@@ -67,5 +68,5 @@ document.addEventListener('DOMContentLoaded', function() {
             container: document.getElementById('wln')
         });
     }
-);
-    </script>
+    );
+</script>
