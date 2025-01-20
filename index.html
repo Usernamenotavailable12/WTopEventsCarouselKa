@@ -25,19 +25,6 @@
       return match ? match[1] : currentUrl;
     }
 
-    // Function to send URL update to parent (Fix for cross-origin issue)
-    function updateParentUrl(newPath) {
-      try {
-        if (window !== window.parent) {
-          window.parent.postMessage({ action: "updateURL", url: newPath }, "*");
-        } else {
-          window.history.pushState(null, '', newPath);
-        }
-      } catch (error) {
-        console.warn("Cross-origin restrictions prevent direct URL update.");
-      }
-    }
-
     // Function to navigate to an event
     function navigateToEvent(event) {
       if (!event || !event.id) {
@@ -56,7 +43,7 @@
 
       // Append event ID to the current sportsbook URL
       const newUrl = `${getCurrentSportsbookUrl()}/event/${event.id}`;
-      updateParentUrl(newUrl);
+      window.history.pushState(null, '', newUrl);
     }
 
     // Function to navigate to a championship
@@ -76,7 +63,7 @@
 
       // Append championship ID to the current sportsbook URL
       const newUrl = `${getCurrentSportsbookUrl()}/championship/${championship.championshipIds}`;
-      updateParentUrl(newUrl);
+      window.history.pushState(null, '', newUrl);
     }
 
     // Initialize the WTopEventsCarousel widget with routing
