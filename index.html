@@ -25,6 +25,19 @@
       return match ? match[1] : currentUrl;
     }
 
+    // Function to update the URL in the parent window (fixing iframe issue)
+    function updateParentUrl(newPath) {
+      try {
+        if (window !== window.parent) {
+          window.parent.history.pushState(null, '', newPath);
+        } else {
+          window.history.pushState(null, '', newPath);
+        }
+      } catch (error) {
+        console.warn("Unable to update parent URL due to cross-origin restrictions.");
+      }
+    }
+
     // Function to navigate to an event
     function navigateToEvent(event) {
       if (!event || !event.id) {
@@ -42,8 +55,8 @@
       });
 
       // Append event ID to the current sportsbook URL
-      const newUrl = `${getCurrentSportsbookUrl()}/sportsbook/event/${event.id}`;
-      window.history.pushState(null, '', newUrl);
+      const newUrl = `${getCurrentSportsbookUrl()}/event/${event.id}`;
+      updateParentUrl(newUrl);
     }
 
     // Function to navigate to a championship
@@ -63,7 +76,7 @@
 
       // Append championship ID to the current sportsbook URL
       const newUrl = `${getCurrentSportsbookUrl()}/championship/${championship.championshipIds}`;
-      window.history.pushState(null, '', newUrl);
+      updateParentUrl(newUrl);
     }
 
     // Initialize the WTopEventsCarousel widget with routing
@@ -94,7 +107,7 @@
         // Championship selection handler (navigates to championship page)
         onChampionshipSelect: navigateToChampionship,
 
-        // Image & Background Overrides
+        // Keeping `iconOverride` unchanged
         iconOverride: {
           iso: {},
           sport: {
