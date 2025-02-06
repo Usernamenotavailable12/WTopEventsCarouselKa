@@ -1,185 +1,220 @@
 <head>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <div id="wln"></div>
 <script src="https://sb2wsdk-altenar2.biahosted.com/altenarWSDK.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (!window.altenarWSDK) {
-      console.error("Altenar WSDK is not loaded.");
-      return;
-    }
-
-    // Initialize Altenar WSDK
-    window.altenarWSDK.init({
-      integration: 'ambassadoribet',
-      culture: 'ka-GE'
-    });
-
-    // Function to get the base sportsbook URL
-    function getCurrentSportsbookUrl() {
-      const currentUrl = window.location.href;
-      const match = currentUrl.match(/(https:\/\/www\.ambassadoribet\.com\/[^\/]+\/sportsbook)/);
-      return match ? match[1] : currentUrl;
-    }
-
-    // Function to update the URL in the parent window (fixing iframe issue)
-    function updateParentUrl(newPath) {
-      try {
-        if (window !== window.parent) {
-          window.parent.history.pushState(null, '', newPath);
-        } else {
-          window.history.pushState(null, '', newPath);
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!window.altenarWSDK) {
+            console.error("Altenar WSDK is not loaded.");
+            return;
         }
-      } catch (error) {
-        console.warn("Unable to update parent URL due to cross-origin restrictions.");
-      }
-    }
 
-    // Function to navigate to an event
-    function navigateToEvent(event) {
-      if (!event || !event.id) {
-        console.error("Invalid event data:", event);
-        return;
-      }
+        // Initialize Altenar WSDK
+        window.altenarWSDK.init({
+            integration: 'ambassadoribet',
+            culture: 'ka-GE'
+        });
 
-      // Navigate within the sportsbook section
-      window.altenarWSDK.set({
-        page: 'event',
-        eventId: event.id,
-        sportId: event.sportId,
-        categoryIds: [event.catId],
-        championshipIds: [event.champId]
-      });
-
-      // Append event ID to the current sportsbook URL
-      const newUrl = `${getCurrentSportsbookUrl()}/event/${event.id}`;
-      updateParentUrl(newUrl);
-    }
-
-    // Function to navigate to a championship
-    function navigateToChampionship(championship) {
-      if (!championship || !championship.championshipIds) {
-        console.error("Invalid championship data:", championship);
-        return;
-      }
-
-      // Navigate within the sportsbook section
-      window.altenarWSDK.set({
-        page: 'championship',
-        championshipIds: championship.championshipIds,
-        sportTypeId: championship.sportTypeId,
-        categories: championship.categories
-      });
-
-      // Append championship ID to the current sportsbook URL
-      const newUrl = `${getCurrentSportsbookUrl()}/championship/${championship.championshipIds}`;
-      updateParentUrl(newUrl);
-    }
-
-    // Initialize the WTopEventsCarousel widget with routing
-    window.WLN = window.altenarWSDK.addWidget({
-      widget: 'WTopEventsCarousel',
-      props: {
-        variants: {
-          BannerEventBox: 4,
-          OddBox: 7,
-          OddChangeIndicator: 2,
-        },
-        enableExpansion: false,
-        expand: false,
-        scrollerControls: 3,
-        competitorLogoURL: "https://usernamenotavailable12.github.io/altenar_logo/{0}.png",
-        slideWidth: 300,
-        scrollerControls: 1,
-        showHeader: false,
-        showBookedLiveIndicator: true,
-        showScorePreview: true,
-        showLiveEvents: true,
-        showLiveIndicator: true,
-        imageType: 0,
-
-        // Event selection handler (navigates to event page)
-        onEventSelect: navigateToEvent,
-
-        // Championship selection handler (navigates to championship page)
-        onChampionshipSelect: navigateToChampionship,
-
-        // Keeping `iconOverride` unchanged
-        iconOverride: {
-          iso: {},
-          sport: {
-            84: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/fb9e1ee1-f411-4416-84ed-a2b97e5a7ed0/glove.svg"
-          },
-          category: {
-            674: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/5f656afe-3bcc-43f1-9ee7-d1c152d651c6/ufc.svg"
-          },
-          championship: {
-            2995: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/e53d1097-3c65-40af-af90-7f9a586b7c0b/euroleague-basketball-logo-2.svg",
-            3031: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/0c4b32b2-a36f-4b84-85b6-2fd58562f3f4/UEFA%20Euro%202024%20Germany.svg",
-            16808: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b6fae6bf-6b17-43c8-88ba-7fc45ef5f45d/Uefa%20Champions%20League.svg",
-            31608: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/fff07a26-db7f-445a-ab63-925d62a722eb/Uefa%20Europa%20Conference%20League.svg",
-            16809: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/d7ac85e4-2c6c-466c-b486-cb83efcf69c9/Uefa%20Europa%20League.svg",
-            3147: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/26f463da-9197-4c1b-991a-10d84fbae9c7/Copa%20America%202024%20Logo.svg",
-            3039: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/a1129224-f1d9-4514-b5d3-9fd402ea1dda/the-championships-wimbledon-vector-logo.svg",
-            3158: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/a1129224-f1d9-4514-b5d3-9fd402ea1dda/the-championships-wimbledon-vector-logo.svg",
-            5098: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/eade7576-69b0-4c55-8d15-da835e14fc34/NationsLeague.svg"
-          }
-        },
-        backgroundOverride: {
-          sport: {
-            66: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            67: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            68: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            69: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            70: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            73: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            75: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            76: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            84: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/e01f8f3d-4e17-4065-89f9-1e2e5b875af0/mme.png",
-            102: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            145: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png"
-          },
-          championship: {
-            3031: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            16808: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/a36bdeb5-3698-4874-8c5b-7b018366926b/background-hampions-league-2.png",
-            2980: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/49bd6b2d-57a2-4f67-9627-8eca661251a6/background-nba-2.png",
-            3147: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/583fc458-53c4-494f-a7f7-1bdece2dfc34/background-copa-2024-purple-2.png",
-            16809: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/af746518-59d4-4f4d-9bea-01fbf4045ee4/background-europe-league-2.png",
-            31608: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/738fefda-e73c-49a6-84ca-c44c77bb494f/background-Conference-league-3.png",
-            2941: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/57512189-c33a-4650-ba5d-d3a604ffdccc/background-la-league-3.png",
-            2943: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b6ce0142-0e85-4ccf-94a2-2d31f88e0578/background-league-1-2.png",
-            2936: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/570e508f-8077-4525-acc4-e4815789edb9/background-premier-league.png",
-            2942: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b1fdbd4a-10fc-4d8e-b6dd-b81b5d91f551/background-seria-a.png",
-            2950: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/73ec2a26-73e8-4a43-a6f7-2546a48e2cd5/background-bundes-league.png",
-            5098: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/ee92bee8-5fe7-45eb-93f4-63ec0139b127/erta%20liga-01.png",
-            2937: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/9b03f38a-3e8f-4da9-a6b2-3ec073b32e67/aas-01.png",
-            2954: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/40cc9b3d-4a2f-403b-bc03-3ef51dd7d8f3/bundesliga%202-01.png",
-            9065: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/7c7715fe-39d7-4303-9024-744215115acb/erovnuli%20liga-01.png",
-            48970: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/6c5186a2-1241-4fa9-86e1-8dd77e0c09e4/222222-01.png",
-            2972: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/c377e6a4-eb02-4c6b-afe7-4c1fa7371c57/nations%20league-01.png"
-          },
-          event: {
-            9357930: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/c82544a8-4506-44a8-8796-ee1896663f2b/background-tyson-vs-paul.png"
-          }
+        // Function to get the base sportsbook URL
+        function getCurrentSportsbookUrl() {
+            const currentUrl = window.location.href;
+            const match = currentUrl.match(/(https:\/\/www\.ambassadoribet\.com\/[^\/]+\/sportsbook)/);
+            return match ? match[1] : currentUrl;
         }
-      },
-      container: document.getElementById('wln')
-    });
 
-    // Handle back navigation
-    window.addEventListener('popstate', () => {
-      window.altenarWSDK.set({
-        // Restore previous state if needed
-      });
+        // Function to update the URL in the parent window (fixing iframe issue)
+        function updateParentUrl(newPath) {
+            try {
+                if (window !== window.parent) {
+                    window.parent.history.pushState(null, '', newPath);
+                } else {
+                    window.history.pushState(null, '', newPath);
+                }
+            } catch (error) {
+                console.warn("Unable to update parent URL due to cross-origin restrictions.");
+            }
+        }
+
+        // Function to navigate to an event
+        function navigateToEvent(event) {
+            if (!event || !event.id) {
+                console.error("Invalid event data:", event);
+                return;
+            }
+
+            // Navigate within the sportsbook section
+            window.altenarWSDK.set({
+                page: 'event',
+                eventId: event.id,
+                sportId: event.sportId,
+                categoryIds: [event.catId],
+                championshipIds: [event.champId]
+            });
+
+            // Append event ID to the current sportsbook URL
+            const newUrl = `${getCurrentSportsbookUrl()}/event/${event.id}`;
+            updateParentUrl(newUrl);
+        }
+
+        // Function to navigate to a championship
+        function navigateToChampionship(championship) {
+            if (!championship || !championship.championshipIds) {
+                console.error("Invalid championship data:", championship);
+                return;
+            }
+
+            // Navigate within the sportsbook section
+            window.altenarWSDK.set({
+                page: 'championship',
+                championshipIds: championship.championshipIds,
+                sportTypeId: championship.sportTypeId,
+                categories: championship.categories
+            });
+
+            // Append championship ID to the current sportsbook URL
+            const newUrl = `${getCurrentSportsbookUrl()}/championship/${championship.championshipIds}`;
+            updateParentUrl(newUrl);
+        }
+
+        // Initialize the WTopEventsCarousel widget with routing
+        window.WLN = window.altenarWSDK.addWidget({
+            widget: 'WTopEventsCarousel',
+            props: {
+                variants: {
+                    BannerEventBox: 4,
+                    OddBox: 7,
+                    OddChangeIndicator: 2,
+                },
+                enableExpansion: false,
+                expand: false,
+                scrollerControls: 3,
+                competitorLogoURL: "https://usernamenotavailable12.github.io/altenar_logo/{0}.png",
+                slideWidth: 300,
+                scrollerControls: 1,
+                showHeader: false,
+                showBookedLiveIndicator: true,
+                showScorePreview: true,
+                showLiveEvents: true,
+                showLiveIndicator: true,
+                imageType: 0,
+
+                // Event selection handler (navigates to event page)
+                onEventSelect: navigateToEvent,
+
+                // Championship selection handler (navigates to championship page)
+                onChampionshipSelect: navigateToChampionship,
+
+                // Keeping `iconOverride` unchanged
+                iconOverride: {
+                    iso: {},
+                    sport: {
+                        84: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/fb9e1ee1-f411-4416-84ed-a2b97e5a7ed0/glove.svg"
+                    },
+                    category: {
+                        674: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/5f656afe-3bcc-43f1-9ee7-d1c152d651c6/ufc.svg"
+                    },
+                    championship: {
+                        2995: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/e53d1097-3c65-40af-af90-7f9a586b7c0b/euroleague-basketball-logo-2.svg",
+                        3031: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/0c4b32b2-a36f-4b84-85b6-2fd58562f3f4/UEFA%20Euro%202024%20Germany.svg",
+                        16808: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b6fae6bf-6b17-43c8-88ba-7fc45ef5f45d/Uefa%20Champions%20League.svg",
+                        31608: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/fff07a26-db7f-445a-ab63-925d62a722eb/Uefa%20Europa%20Conference%20League.svg",
+                        16809: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/d7ac85e4-2c6c-466c-b486-cb83efcf69c9/Uefa%20Europa%20League.svg",
+                        3147: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/26f463da-9197-4c1b-991a-10d84fbae9c7/Copa%20America%202024%20Logo.svg",
+                        3039: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/a1129224-f1d9-4514-b5d3-9fd402ea1dda/the-championships-wimbledon-vector-logo.svg",
+                        3158: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/a1129224-f1d9-4514-b5d3-9fd402ea1dda/the-championships-wimbledon-vector-logo.svg",
+                        5098: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/eade7576-69b0-4c55-8d15-da835e14fc34/NationsLeague.svg"
+                    }
+                },
+
+                backgroundOverride: {
+                    sport: {
+                        66: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        67: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        68: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        69: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        70: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        73: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        75: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        76: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        84: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/e01f8f3d-4e17-4065-89f9-1e2e5b875af0/mme.png",
+                        102: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png",
+                        145: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/3f2b10a9-8c65-47b2-9d39-0e833145bcc5/background-euro-2024-purple-2.png"
+                    },
+                    category: {},
+                    championship: {
+                        2935: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/b80d2c4e-aa50-4ef1-9284-80ea74b298dc/6456158-01.png",
+                        2936: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/00bc1198-5b48-4f82-867d-a41c92c13b5d/premier-01.png",
+                        2937: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/9b03f38a-3e8f-4da9-a6b2-3ec073b32e67/aas-01.png",
+                        2941: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/14df192b-389c-4ab5-be4a-227ccbb9bcde/laliga-01.png",
+                        2942: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/97daf6f9-8a66-4431-855d-957bdb3ccdf2/seria%20a-01.png",
+                        2943: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/57e0362e-ddc9-4b00-b09a-6763348d2d82/france-01.png",
+                        2950: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/559440a5-0405-4d9f-87c0-2c17387480ce/bundesliga-01.png",
+                        2951: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/55e65e61-9841-4dd1-9a9a-d9016ad1121f/turkish-01.png",
+                        2954: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/40cc9b3d-4a2f-403b-bc03-3ef51dd7d8f3/bundesliga%202-01.png",
+                        2965: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/f352583c-a87e-4263-9994-3b918a99bdc3/2222-01.png",
+                        2972: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/c377e6a4-eb02-4c6b-afe7-4c1fa7371c57/nations%20league-01.png",
+                        2973: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/7ee9391f-6ce5-4be7-9131-7a5dfb96d46b/copaaa-01.png",
+                        2980: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/e10f57bc-3e2a-41d9-959b-60a7bfff82aa/NBA.png",
+                        2995: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/89216339-213f-4c03-9335-e083c72e8361/basket-01.png",
+                        3013: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/adba9c26-047c-4cc5-a240-ea3e52fc2cba/2-01.png",
+                        3023: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/4eaecb75-bc1d-41f6-8236-76e63060202f/erovnuli%20liga-01.png",
+                        3031: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/4955be70-996d-42a1-813b-90d63becf1ba/background-euro-2024-purple.png",
+                        3036: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/adba9c26-047c-4cc5-a240-ea3e52fc2cba/2-01.png",
+                        3046: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/38d7cfa3-eb8d-4faa-b5f5-2e180fb4b882/33-01.png",
+                        3065: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/63e07dba-f9c9-4b66-8f1c-70a8361d2e6d/33333-01.png",
+                        3070: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/0189c669-b52b-4278-a71c-f6216eb43407/ფფფ-01.png",
+                        3102: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/6236b0b9-948d-411f-a562-f7ef1a17228f/%D1%81%D0%B3%D0%B7-01.png",
+                        3111: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/687e0d47-f92a-4627-93fe-3e7e4e37d38d/22-01.png",
+                        3112: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/7253c5f5-6075-41f5-a81c-900fb75099af/german-01.png",
+                        3147: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/37c90b2d-910a-4e97-8c06-038dadff3958/background-copa-2024-purple.png",
+                        3152: "https://images.takeshape.io/f2b70d9b-56f9-4d2d-be98-874fcbc02a46/dev/c03a2e37-df3f-4ae0-af0c-bf6484334427/2222222222-01.png",
+                        3364: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/5ed7ee57-feb8-4165-8ea5-9e8aa8743596/3332-01.png",
+                        4053: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/6bc627ce-9ddf-4c63-8e5a-db6b6ba82a28/erovnuli%20liga-01.png",
+                        4284: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/5a023171-9324-4b2a-a66c-643a4d1851c4/nations%20league-01.png",
+                        4959: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/6bc627ce-9ddf-4c63-8e5a-db6b6ba82a28/erovnuli%20liga-01.png",
+                        5098: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/ee92bee8-5fe7-45eb-93f4-63ec0139b127/erta%20liga-01.png",
+                        5242: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/0393d995-5b16-4a6b-8273-278c4507d04b/dads-01.png",
+                        7879: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/e10f57bc-3e2a-41d9-959b-60a7bfff82aa/NBA.png",
+                        9065: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/7c7715fe-39d7-4303-9024-744215115acb/erovnuli%20liga-01.png",
+                        16808: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/a36bdeb5-3698-4874-8c5b-7b018366926b/background-hampions-league-2.png",
+                        16809: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/834e9bb9-244b-45d9-9244-7379daa245ea/background-europe-league.png",
+                        17241: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/e00e201a-eaf6-4f54-a6d0-f8de373965c3/21-01.png",
+                        17254: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/72048dbe-65ba-48ca-8afa-61196db21935/u111-01.png",
+                        17271: "https://images.takeshape.io/f2b70d9b-56f9-4d2d-be98-874fcbc02a46/dev/037d62fd-4a9d-4dc0-a415-47b16aadfaab/Women%20Champions%20League.svg",
+                        18264: "https://images.takeshape.io/f2b70d9b-56f9-4d2d-be98-874fcbc02a46/dev/70311580-f4a2-4640-bf3b-15002f31700e/World%20Boxing%20Association.png",
+                        18388: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/f67eb261-a862-41c2-8ab7-a4f7c394a084/afrika.png",
+                        18766: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/fd65bf62-1f34-4452-9d47-1c7e75ef0aa3/tenniis-01.png",
+                        31608: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/42707760-995a-4313-8223-be6a6b267bd2/background-conference-league.png",
+                        39667: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/c51497a3-412e-4bf7-bf5b-4d9dfb06dde0/arabia-01.png",
+                        48970: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/6c5186a2-1241-4fa9-86e1-8dd77e0c09e4/222222-01.png",
+                        49055: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/2b102183-cd3a-4cc1-a48b-a6c8bf7f8670/14515-01.png"
+                    },
+                    event: {
+                        9357930: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/c82544a8-4506-44a8-8796-ee1896663f2b/background-tyson-vs-paul.png",
+                        9798925: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/68c51195-0b44-46d0-b79d-fa17c12e0275/e-01.png",
+                        11196352: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/66a2e7a0-5834-450f-93fb-1eb7262ce327/mma-01.png",
+                        11196353: "https://images.takeshape.io/5da2b4d5-59f6-412a-82c3-f6a272b532be/dev/32ebb9e1-f9fc-49e5-8a5d-c3dfaafa7730/webbb-01.png",
+                        11676890: "https://images.takeshape.io/f2b70d9b-56f9-4d2d-be98-874fcbc02a46/dev/5c1a4359-de6f-41bf-a9a6-21bdd904a29d/Aleksandre%20Topuria%20top%20event%20box%20-%20better.png"
+                    }
+                }
+            },
+            container: document.getElementById('wln')
+        });
+
+        // Handle back navigation
+        window.addEventListener('popstate', () => {
+            window.altenarWSDK.set({
+                // Restore previous state if needed
+            });
+        });
     });
-  });
 </script>
 <style>
-  @font-face {
-    font-family: 'Noto Sans Ambassadori Slim';
-    src: url(https://usernamenotavailable12.github.io/Font-Repository/NotoSansAmbassadori-Regular.ttf);
-  }
+    @font-face {
+        font-family: 'Noto Sans Ambassadori Slim';
+        src: url(https://usernamenotavailable12.github.io/Font-Repository/NotoSansAmbassadori-Regular.ttf);
+    }
 </style>
